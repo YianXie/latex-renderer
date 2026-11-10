@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LaTeX to PNG</title>
+  <meta name="description" content="Render LaTeX to a high-resolution PNG. Download or copy it instantly.">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+  <script defer src="vendor/mathjax-3.2.2/tex-svg-full.js"></script>
+</head>
+<body>
+  <main>
+    <textarea id="input" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" autofocus
+      aria-label="LaTeX source" placeholder="Type LaTeX">\int_0^\infty e^{-x^2}\,dx = \frac{\sqrt{\pi}}{2}</textarea>
+
+    <section class="output">
+      <div class="preview">
+        <img id="image" alt="Rendered expression" hidden>
+        <p id="message" role="status">Loading…</p>
+      </div>
+      <div class="actions">
+        <button id="download" type="button" disabled>Download</button>
+        <button id="copy" type="button" disabled>Copy</button>
+      </div>
+    </section>
+
+    <label class="option">
+      <input id="white" type="checkbox" autocomplete="off">
+      White background
+    </label>
+  </main>
+</body>
+</html>

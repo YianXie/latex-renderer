@@ -1,0 +1,105 @@
+:root {
+  color-scheme: light;
+  --ink: #111;
+  --muted: #777;
+  --line: #e2e2e2;
+  --error: #b3261e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--ink);
+  font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+main {
+  width: min(760px, 100%);
+  margin: 0 auto;
+  padding: clamp(24px, 12vh, 120px) 16px 32px;
+  display: grid;
+  gap: 12px;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: inherit;
+  font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  resize: vertical;
+}
+
+textarea:focus { outline: none; border-color: var(--ink); }
+
+.output {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.preview {
+  flex: 1;
+  min-width: 0;
+  min-height: 180px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  overflow: auto;
+  /* Checkerboard: makes the PNG's transparency visible. */
+  background: repeating-conic-gradient(#f3f3f3 0 25%, #fff 0 50%) 0 0 / 16px 16px;
+}
+
+.preview img { display: block; max-width: 100%; height: auto; }
+.preview img[hidden] { display: none; }
+.preview.stale img { opacity: 0.25; }
+
+#message { margin: 0; color: var(--muted); text-align: center; }
+#message:empty { display: none; }
+.preview.stale #message { color: var(--error); }
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 96px;
+}
+
+button {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) { border-color: var(--ink); }
+button:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+button:disabled { color: #bbb; cursor: default; }
+
+.option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  cursor: pointer;
+  user-select: none;
+}
+
+.option input { margin: 0; accent-color: var(--ink); }
+
+@media (max-width: 520px) {
+  .output { flex-direction: column; }
+  .actions { flex-direction: row; width: 100%; }
+  .actions button { flex: 1; }
+}
