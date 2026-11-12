@@ -56,8 +56,49 @@ function stripDelimiters(text) {
   return match ? match.slice(1).find((group) => group !== undefined).trim() : text.trim();
 }
 
+// MathJax ignores \\ and \newline outside an environment, so input that uses
+// them at the top level is wrapped in one: align* if it also has a top-level &,
+// otherwise gather* for centered lines.
+function wrapLines(tex) {
+  let depth = 0;  // Nesting of {…} groups and \begin…\end environments.
+  let hasBreak = false;
+  let hasAlignment = false;
+
+  for (let i = 0; i < tex.length; i++) {
+    const char = tex[i];
+    if (char === '%') {
+      const end = tex.indexOf('\n', i);
+      if (end === -1) break;
+      i = end;
+    } else if (char === '{') {
+      depth++;
+    } else if (char === '}') {
+      depth--;
+    } else if (char === '&') {
+      if (depth === 0) hasAlignment = true;
+    } else if (char === '\\') {
+      const name = tex.slice(i + 1).match(/^[a-zA-Z]+/)?.[0];
+      if (!name) {
+        // A control symbol such as \\, \{ or \&.
+        if (tex[i + 1] === '\\' && depth === 0) hasBreak = true;
+        i++;
+        continue;
+      }
+      if (name === 'begin') depth++;
+      else if (name === 'end') depth--;
+      else if (name === 'newline' && depth === 0) hasBreak = true;
+      i += name.length;
+    }
+  }
+
+  if (!hasBreak) return tex;
+  const environment = hasAlignment ? 'align*' : 'gather*';
+  // The newline keeps a trailing % comment from swallowing \end.
+  return `\\begin{${environment}}${tex}\n\\end{${environment}}`;
+}
+
 function render() {
-  const tex = stripDelimiters(input.value);
+  const tex = wrapLines(stripDelimiters(input.value));
   if (!tex) return clear();
 
   try {

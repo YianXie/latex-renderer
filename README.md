@@ -7,6 +7,7 @@ Render LaTeX to a high-resolution PNG, then download it or copy it to the clipbo
 ## Features
 
 - Renders most LaTeX math, including AMS environments, `mhchem` (`\ce`), `cancel`, `braket`, `mathtools` and `\tag`.
+- `\\` and `\newline` break lines. Lines are centered, or aligned on `&` when the input uses it.
 - Exports at 200 px per em (12pt type at 1200 dpi), scaled down only when an expression would exceed browser canvas limits.
 - Transparent background by default, with an optional white background.
 - **Copy** button, plus <kbd>⌘C</kbd> on macOS or <kbd>Ctrl+C</kbd> elsewhere. If text is selected, the shortcut copies the text as usual.
